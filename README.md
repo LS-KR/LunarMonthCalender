@@ -7,7 +7,8 @@
 函数`LunarCalender(int year, int month, int day)`用于判断是否为闰月, 并将公历日期转化为农历日期(存储在`LunarCalenderDay`中)  
 如果需要多次调用, 也可以用下面的代码块定义一个函数: 
 ```c++
-typedef struct {
+typedef struct 
+{
     unsigned int Month;
     unsigned int Day;
     bool IsLeap;
