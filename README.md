@@ -5,8 +5,25 @@
 ## C++ 部分
 全局变量`LunarCalenderDay`用于存储农历日期, 其中, 第6\~9个比特位为月份, 第0\~5个比特位为日期(从低至高数)  
 函数`LunarCalender(int year, int month, int day)`用于判断是否为闰月, 并将公历日期转化为农历日期(存储在`LunarCalenderDay`中)  
+如果需要多次调用, 也可以用下面的代码块定义一个函数: 
+```c++
+typedef struct {
+    unsigned int Month;
+    unsigned int Day;
+    bool IsLeap;
+} LunarDay;
+LunarDay GetLunarCalender(int year, int month, int day) 
+{
+    LunarDay lunarDay;
+    LunarCalenderDay = 0;//初始化, 否则会返回错误的农历日期
+    lunarDay.IsLeap = LunarCalender(year, month, day);
+    lunarDay.Month = (LunarCalenderDay & 0x3C0) >> 6;
+    lunarDay.Day = (LunarCalenderDay & 0x3F);
+    return lunarDay;
+}
+```
 
-您可以封装一个类使其能够直接返回农历日期, 并且可读性更高  
+也可以封装一个类使其能够直接返回农历日期, 并且可读性更高  
 
 ## C# 部分
 C#部分存在一个名为`Lunar`的类, 其内部定义的函数可以将公历日期转化为农历日期, 或者其他形式的日期  
