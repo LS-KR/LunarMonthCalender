@@ -1,4 +1,4 @@
-﻿// LunarCalenderDay.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+// LunarCalenderDay.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
 #include <iostream>
@@ -7,8 +7,22 @@
 
 #pragma warning(disable:4996)
 
-unsigned int LunarCalendarDay;
-unsigned int LunarCalendarTable[199] = {
+typedef struct {
+    int Month;
+    int Day;
+    bool IsLeap;
+} LunarDate;
+
+class Lunar
+{
+public:
+    LunarDate GetLunarDate(int year, int month, int day);
+    int GetOriginalSource(int year, int month, int day);
+private:
+    unsigned int LunarCalendarDay;
+    int LunarCalendar(int year, int month, int day);
+protected:
+    unsigned int LunarCalendarTable[199] = {
     0x04AE53,0x0A5748,0x5526BD,0x0D2650,0x0D9544,0x46AAB9,0x056A4D,0x09AD42,0x24AEB6,0x04AE4A,/*1901-1910*/
     0x6A4DBE,0x0A4D52,0x0D2546,0x5D52BA,0x0B544E,0x0D6A43,0x296D37,0x095B4B,0x749BC1,0x049754,/*1911-1920*/
     0x0A4B48,0x5B25BC,0x06A550,0x06D445,0x4ADAB8,0x02B64D,0x095742,0x2497B7,0x04974A,0x664B3E,/*1921-1930*/
@@ -29,11 +43,12 @@ unsigned int LunarCalendarTable[199] = {
     0x8A95BF,0x0A9553,0x0B4A47,0x6B553B,0x0AD54F,0x055A45,0x4A5D38,0x0A5B4C,0x052B42,0x3A93B6,/*2071-2080*/
     0x069349,0x7729BD,0x06AA51,0x0AD546,0x54DABA,0x04B64E,0x0A5743,0x452738,0x0D264A,0x8E933E,/*2081-2090*/
     0x0D5252,0x0DAA47,0x66B53B,0x056D4F,0x04AE45,0x4A4EB9,0x0A4D4C,0x0D1541,0x2D92B5          /*2091-2099*/
+    };
+    unsigned int MonthAdd[12] = { 0,31,59,90,120,151,181,212,243,273,304,334 };
+    unsigned int MonthAddLeap[12] = { 0,31,60,91,121,152,182,213,244,274,305,335 };
 };
-unsigned int MonthAdd[12] = { 0,31,59,90,120,151,181,212,243,273,304,334 };
-unsigned int MonthAddLeap[12] = { 0,31,60,91,121,152,182,213,244,274,305,335 };
 
-int LunarCalendar(int year, int month, int day)
+int Lunar::LunarCalendar(int year, int month, int day)
 {
     //StaticDayCount记录大小月的天数 29 或30
     //index 记录从哪个月开始来计算。
@@ -114,6 +129,23 @@ int LunarCalendar(int year, int month, int day)
         return 0;
 }
 
+int Lunar::GetOriginalSource(int year, int month, int day)
+{
+    LunarCalendarDay = 0;
+    LunarCalendar(year, month, day);
+    return LunarCalendarDay;
+}
+
+LunarDate Lunar::GetLunarDate(int year, int month, int day)
+{
+    LunarDate lunardate;
+    LunarCalendarDay = 0;
+    lunardate.IsLeap = LunarCalendar(year, month, day);
+    lunardate.Month = (LunarCalendarDay & 0x3C0) >> 6;
+    lunardate.Day = (LunarCalendarDay & 0x3F);
+    return lunardate;
+}
+
 int main()
 {
     const char* ChDay[] = { "*","初一","初二","初三","初四","初五",
@@ -130,16 +162,9 @@ int main()
     char str[13] = "";
     std::cout << "Input the time(yyyy mm dd):";
     std::cin >> year >> month >> day;
-    if (LunarCalendar(year, month, day))
-    {
-        strcat(str, "闰");
-        strcat(str, ChMonth[(LunarCalendarDay & 0x3C0) >> 6]);
-    }
-    else
-        strcat(str, ChMonth[(LunarCalendarDay & 0x3C0) >> 6]);
-    strcat(str, "月");
-    strcat(str, ChDay[LunarCalendarDay & 0x3F]);
-    puts(str);
+    Lunar l;
+    LunarDate ld = l.GetLunarDate(year, month, day);
+    std::cout << ((ld.IsLeap == true) ? "閏" : "") << ChMonth[ld.Month] << "月" << ChDay[ld.Day] << std::endl;
     return 0;
 }
 
