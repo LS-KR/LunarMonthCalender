@@ -18,6 +18,8 @@ class Lunar
 public:
     LunarDate GetLunarDate(int year, int month, int day);
     int GetOriginalSource(int year, int month, int day);
+    std::string GetString(LunarDate ld);
+    bool IsLeap(int year, int month, int day);
 private:
     unsigned int LunarCalendarDay;
     int LunarCalendar(int year, int month, int day);
@@ -139,11 +141,43 @@ int Lunar::GetOriginalSource(int year, int month, int day)
 LunarDate Lunar::GetLunarDate(int year, int month, int day)
 {
     LunarDate lunardate;
+    lunardate.Day = 0;
+    lunardate.Month = 0;
+    lunardate.IsLeap = false;
+    if ((year < 1901) || (year > 2099))
+        return lunardate;
+    if ((month <= 0) || (month >= 12)) 
+        return lunardate;
+    if ((month == 2) && ((day <= 0) || (day > 29)))
+        return lunardate;
+    else if (((month == 1) || (month == 3) || (month == 5) || (month == 7) || (month == 8) || (month == 10) || (month == 12)) && ((day <= 0) || (day > 31)))
+        return lunardate;
+    else if (((month == 4) || (month == 6) || (month == 9) || (month == 11)) && ((day <= 0) || (day > 30))) 
+        return lunardate;
     LunarCalendarDay = 0;
     lunardate.IsLeap = LunarCalendar(year, month, day);
     lunardate.Month = (LunarCalendarDay & 0x3C0) >> 6;
     lunardate.Day = (LunarCalendarDay & 0x3F);
     return lunardate;
+}
+
+std::string Lunar::GetString(LunarDate ld)
+{
+    const std::string ChDay[] = { "*","初一","初二","初三","初四","初五",
+                           "初六","初七","初八","初九","初十",
+                           "十一","十二","十三","十四","十五",
+                           "十六","十七","十八","十九","二十",
+                           "廿一","廿二","廿三","廿四","廿五",
+                           "廿六","廿七","廿八","廿九","三十"
+    };
+    const std::string ChMonth[] = { "*","正","二","三","四","五","六","七","八","九","十","冬","腊" };
+    std::string cr = ((ld.IsLeap) ? "閏" : "") + ChDay[ld.Month] + "月" + ChMonth[ld.Day];
+}
+
+bool Lunar::IsLeap(int year, int month, int day)
+{
+    LunarCalendarDay = 0;
+    return LunarCalendar(year, month, day);
 }
 
 int main()
