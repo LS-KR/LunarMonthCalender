@@ -146,7 +146,7 @@ LunarDate Lunar::GetLunarDate(int year, int month, int day)
     lunardate.IsLeap = false;
     if ((year < 1901) || (year > 2099))
         return lunardate;
-    if ((month <= 0) || (month >= 12)) 
+    if ((month <= 0) || (month > 12)) 
         return lunardate;
     if ((month == 2) && ((day <= 0) || (day > 29)))
         return lunardate;
