@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace LunarCalendarDay_Cs2
 {
@@ -190,13 +190,13 @@ namespace LunarCalendarDay_Cs2
                 throw new ArgumentOutOfRangeException(nameof(year));
             if (year > 2099)
                 throw new ArgumentOutOfRangeException(nameof(year));
-            if ((month <= 0) || (month >= 12)) 
+            if ((month <= 0) || (month > 12))
                 throw new ArgumentOutOfRangeException(nameof(month));
             if ((month == 2) && ((day <= 0) || (day > 29)))
                 throw new ArgumentOutOfRangeException(nameof(day));
             else if (((month == 1) || (month == 3) || (month == 5) || (month == 7) || (month == 8) || (month == 10) || (month == 12)) && ((day <= 0) || (day > 31)))
                 throw new ArgumentOutOfRangeException(nameof(day));
-            else if (((month == 4) || (month == 6) || (month == 9) || (month == 11)) && ((day <= 0) || (day > 30))) 
+            else if (((month == 4) || (month == 6) || (month == 9) || (month == 11)) && ((day <= 0) || (day > 30)))
                 throw new ArgumentOutOfRangeException(nameof(day));
             if (LunarCalendar(year, month, day) != 0)
                 ld.IsLeap = true;
