@@ -50,7 +50,7 @@ bool isLeapMonth = Lunar.IsLeap();
 string ldstr = Lunar.GetString(Lunar.Lang.Chinese, 2022, 3, 29);
 ```
 
-## Java部分
+## Java 部分
 
 存在一个名为`LunarMonthCalendar`的类, 可将公历日期转化为农历日期.  
 例如:  
@@ -75,7 +75,11 @@ public static class LunarDate {
 boolean isleap = LunarMonthCalendar.IsLeap(2000, 4, 5);
 ```
 
-## Kotlin部分
+## Kotlin 部分
 
 直接运行就行
 
+## Python 部分
+
+直接运行就行  
+不要瞎改  
