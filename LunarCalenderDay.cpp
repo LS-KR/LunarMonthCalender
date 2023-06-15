@@ -172,6 +172,7 @@ std::string Lunar::GetString(LunarDate ld)
     };
     const std::string ChMonth[] = { "*","正","二","三","四","五","六","七","八","九","十","冬","腊" };
     std::string cr = ((ld.IsLeap) ? "閏" : "") + ChDay[ld.Month] + "月" + ChMonth[ld.Day];
+    return cr;
 }
 
 bool Lunar::IsLeap(int year, int month, int day)
