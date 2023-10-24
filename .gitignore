@@ -9,3 +9,7 @@ build/
 cache/
 .output/
 output/
+obj/
+.obj/
+bin/
+.bin/
